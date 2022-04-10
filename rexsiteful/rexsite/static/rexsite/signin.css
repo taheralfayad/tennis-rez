@@ -1,0 +1,36 @@
+
+.card_title {
+
+    text-align: center;
+
+}
+
+.card_container{  
+    display:flex;  
+    justify-content:center;  
+    align-items:center;  
+    position: absolute;
+  }  
+
+.buttonsign {
+    
+    text-decoration: none;
+    padding: 10px 10px;
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    background: #f77062;
+    color: #fff;
+    list-style: no;
+    margin: s0px;
+
+}
+
+.card_content {
+
+    text-align: center;
+    justify-content: center;
+
+}
