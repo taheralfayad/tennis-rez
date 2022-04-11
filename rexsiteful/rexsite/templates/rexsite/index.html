@@ -54,7 +54,9 @@
         <div class="h-100 d-flex justify-content-center align-items-">
             <div class="card_content">
                 <h3 id="card_title">Reservation</h3>
-                <form method="POST" action="{% url 'reserve'">
+                <form method="POST" action="{% url 'reserve' %}">
+                    {% csrf_token %}
+
                     <div class="form_row">
 
                         <div>{{ message }}</div>
@@ -63,7 +65,7 @@
                         <select class="custom-select" name="court">
                             <option value="day_select"></option>
                             <option value="Minne"> <p id="2day">Minnehaha Park</option>
-                            <option value="mcp">Maitland Community Park</option>
+                            <option value="Maitland Community Park">Maitland Community Park</option>
                             <option value="hill">Hill Rec Park</option>
                         </select>
 

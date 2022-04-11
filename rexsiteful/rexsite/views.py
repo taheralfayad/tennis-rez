@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
+from datetime import datetime
 
 from .models import *
 
@@ -48,10 +49,13 @@ def logout_view(request):
     })
 
 def reserve(request):
-    if request.method == "POST":        
-        reservation = Reservation.objects.filter(pk = int(request.POST["court"])).values()
-        for x in reservation:
-            if reservation[x].starttime <= request.POST["starttime"] or reservation[x].endtime >= request.POST["endtime"]:
+    if request.method == "POST":
+        court = Courts.objects.get(courtname = request.POST["court"])        
+        reservation = Reservation.objects.filter(court = court.id).values()
+        start_time = datetime.strptime(request.POST["starttime"], '%H:%M')
+        end_time = datetime.strptime(request.POST["endtime"], '%H:%M')
+        for x in range(len(reservation)):
+            if reservation[x]["starttime"].hour <= start_time.hour or reservation[x]["endtime"].hour >= end_time.hour:
                 return render(request, "rexsite/index.html", {
                     "message": "This court is already booked, please try another court or another time."
                 })
