@@ -63,18 +63,18 @@
 
 
                         <select class="custom-select" name="court">
-                            <option value="day_select"></option>
-                            <option value="Minne"> <p id="2day">Minnehaha Park</option>
+                            <option value="day"></option>
+                            <option value="Minne">Minnehaha Park</option>
                             <option value="Maitland Community Park">Maitland Community Park</option>
                             <option value="hill">Hill Rec Park</option>
                         </select>
 
-                        <input id="datefield" class="custom-select" type='date' min='1899-01-01' max='2000-13-13'>
+                        <input name = "day" id="datefield" class="custom-select" type='date' min='1899-01-01' max='2000-13-13' >
                         <script src="{% static 'rexsite/app.js' %}"></script>
                         </input>
 
                         <input class="custom-select" type="time" name="starttime">
-                        <input class="custom-select" type="time"name="endtime">
+                        <input class="custom-select" type="time" name="endtime">
 
                       <div>
                     <input type="submit" class="buttonsign" value="SUBMIT">
