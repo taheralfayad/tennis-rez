@@ -1,9 +1,13 @@
+from email import message
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 from datetime import datetime
+import pdb 
+
+from urllib3 import HTTPResponse
 
 from .models import *
 
@@ -16,6 +20,7 @@ def rexsite(request):
 
 
 def login_view(request):
+    breakpoint()
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -51,30 +56,29 @@ def logout_view(request):
 def reserve(request):
     if request.method == "POST":
         court = Courts.objects.get(courtname = request.POST["court"])        
-        reservation = Reservation.objects.filter(court = court.id).values()
-        day = datetime.strptime(request.POST['day'], "%Y-%m-%d")
+        dayof = datetime.strptime(request.POST['day'], "%Y-%m-%d")
         start_time = datetime.strptime(request.POST["starttime"], '%H:%M')
         end_time = datetime.strptime(request.POST["endtime"], '%H:%M')
+        reservation = Reservation.objects.filter(court = court.id, dayof = dayof).values()
         for x in range(len(reservation)):
-            if reservation[x]['day'] == day.day and (reservation[x]["starttime"].hour <= start_time.hour or reservation[x]["endtime"].hour >= end_time.hour):
+            if (reservation[x]["starttime"].hour <= start_time.hour and reservation[x]["endtime"].hour >= end_time.hour):
                 return render(request, "rexsite/index.html", {
                     "message": "This court is already booked, please try another court or another time."
                 })
-            elif end_time.hour >= (start_time.hour + 2):
-                return render(request, "rexsite/index.html", {
-                    "message": "Your Reservation either exceeds 2 hours or is invalid, please input a vaild reservation"
-                })
-            else:
-                newrez = Reservation()
-                newrez.court = court
-                newrez.starttime = request.POST["starttime"]
-                newrez.endtime = request.POST["endtime"]
-                newrez.save()
-                return render(request, "rexsite/index.html", {
-                    "message": "Your Reservation has been registered! Thanks for using Rec-Serve!"
-                })
-
-
+        if end_time.hour > (start_time.hour + 2):
+            return render(request, "rexsite/index.html", {
+                "message": "Your Reservation either exceeds 2 hours or is invalid, please input a vaild reservation"
+            })
+        else:
+            newrez = Reservation()
+            newrez.dayof = dayof
+            newrez.court = court
+            newrez.starttime = request.POST["starttime"]
+            newrez.endtime = request.POST["endtime"]
+            newrez.save()
+            return render(request, "rexsite/index.html", {
+                "message": "Your Reservation has been registered! Thanks for using Rec-Serve!"
+            })
 
 
     

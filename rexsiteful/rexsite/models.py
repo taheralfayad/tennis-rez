@@ -12,10 +12,10 @@ class Courts(models.Model):
 
 
 class Reservation(models.Model):
-    firstname = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="firstname", default="john")
-    lastname = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="lastname", default="doe")
+    firstname = models.CharField(max_length=40, default="john")
+    lastname = models.CharField(max_length=40, default="doe")
     court = models.ForeignKey(Courts, on_delete=models.CASCADE, related_name="court", default= 1)
-    day = models.DateField(default = date.today())
+    dayof = models.DateField(default = date.today())
     starttime = models.TimeField(default = "14:30")
     endtime = models.TimeField(default = "14:30")
 
