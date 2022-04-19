@@ -22,12 +22,6 @@
         <img src="{% static 'rexsite/rex2.png' %}" id="rex">
         <h1 id="navbar_logo">REXSITE</h1>
 
-        <div class="navbar_toggle" id="mobile-menu">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-
         <ul class="navbar_menu">
 
             <div id="signin">
@@ -89,13 +83,18 @@
 
 
     <!-- calendar section--->
-    <ul>
-        {% for reservation in Reservations %}
-            <li>Reservation {{ reservation.firstname }}</li>
-        {% endfor %}
-
-    </ul>
-
+    
+        <table>
+            <tr>
+                <td>Reserved:</td>
+            </tr>
+                {% for reservation in Reservations %}
+                <tr>
+                 <td> At {{ reservation.court }} From {{ reservation.starttime }} Until {{ reservation.endtime }}</td>
+                 <tr>
+                {% endfor %}
+                
+        </table>
     
 
 
