@@ -62,15 +62,15 @@ def reserve(request):
         end_time = datetime.strptime(request.POST["endtime"], '%H:%M')
         reservation = Reservation.objects.filter(court = court.id, dayof = dayof).values()
         for x in range(len(reservation)):
-            if (reservation[x]["starttime"].hour <= start_time.hour and reservation[x]["endtime"].hour >= start_time.hour) or (reservation[x]["starttime"].hour <= end_time.hour and reservation[x]["endtime"].hour >= end_time.hour):
+            if ((reservation[x]["starttime"].hour <= start_time.hour and reservation[x]["starttime"].minute == start_time.minute) and (reservation[x]["endtime"].hour > start_time.hour and reservation[x]["endtime"].minute == start_time.minute)) or ((reservation[x]["starttime"].hour < end_time.hour and reservation[x]["starttime"].minute == end_time.minute) and (reservation[x]["endtime"].hour > end_time.hour and reservation[x]["endtime"].minute == end_time.minute)):
                 return render(request, "rexsite/index.html", {
                     "message": "This court is already booked, please try another court or another time.",
-                    "Reservations": Reservation.objects.filter(dayof = date.today()).order_by("court", "starttime")
+                    "Reservations": Reservation.objects.filter(dayof = date.today()).order_by("starttime", "court")
                 })
         if end_time.hour > (start_time.hour + 2):
             return render(request, "rexsite/index.html", {
                 "message": "Your Reservation either exceeds 2 hours or is invalid, please input a vaild reservation",
-                "Reservations": Reservation.objects.filter(dayof = date.today()).order_by("court", "starttime")
+                "Reservations": Reservation.objects.filter(dayof = date.today()).order_by("starttime", "court")
             })
         else:
             newrez = Reservation()
@@ -81,7 +81,7 @@ def reserve(request):
             newrez.save()
             return render(request, "rexsite/index.html", {
                 "message": "Your Reservation has been registered! Thanks for using Rec-Serve!",
-                "Reservations": Reservation.objects.filter(dayof = date.today())
+                "Reservations": Reservation.objects.filter(dayof = date.today()).order_by("starttime", "court")
             })
 
 
