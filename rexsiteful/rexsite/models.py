@@ -19,5 +19,6 @@ class Reservation(models.Model):
     starttime = models.TimeField(default = "14:30")
     endtime = models.TimeField(default = "14:30")
 
+    
     def __str__(self):
         return f"{self.firstname} {self.court}"

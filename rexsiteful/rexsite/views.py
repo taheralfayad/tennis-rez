@@ -58,16 +58,18 @@ def reserve(request):
     if request.method == "POST":
         court = Courts.objects.get(courtname = request.POST["court"])        
         dayof = datetime.strptime(request.POST['day'], "%Y-%m-%d")
-        start_time = datetime.strptime(request.POST["starttime"], '%H:%M')
-        end_time = datetime.strptime(request.POST["endtime"], '%H:%M')
+        newrez_starttime = datetime.strptime(request.POST["starttime"], '%H:%M')
+        newrez_endtime = datetime.strptime(request.POST["endtime"], '%H:%M')
         reservation = Reservation.objects.filter(court = court.id, dayof = dayof).values()
         for x in range(len(reservation)):
-            if ((reservation[x]["starttime"].hour <= start_time.hour and reservation[x]["starttime"].minute == start_time.minute) and (reservation[x]["endtime"].hour > start_time.hour and reservation[x]["endtime"].minute == start_time.minute)) or ((reservation[x]["starttime"].hour < end_time.hour and reservation[x]["starttime"].minute == end_time.minute) and (reservation[x]["endtime"].hour > end_time.hour and reservation[x]["endtime"].minute == end_time.minute)):
+            oldrez_starttime = reservation[x]["starttime"]
+            oldrez_endttime = reservation[x]["endtime"]
+            if ((oldrez_starttime.hour <= newrez_starttime.hour and oldrez_starttime.minute == newrez_starttime.minute) and (oldrez_endttime.hour > newrez_starttime.hour and oldrez_starttime.minute == newrez_starttime.minute)) or ((oldrez_starttime.hour < newrez_endtime.hour and oldrez_starttime.minute == newrez_endtime.minute) and (oldrez_endttime.hour > newrez_endtime.hour and oldrez_endttime.minute == newrez_endtime.minute)) or (oldrez_starttime == newrez_starttime and oldrez_endttime == newrez_endtime):
                 return render(request, "rexsite/index.html", {
                     "message": "This court is already booked, please try another court or another time.",
                     "Reservations": Reservation.objects.filter(dayof = date.today()).order_by("starttime", "court")
                 })
-        if end_time.hour > (start_time.hour + 2):
+        if newrez_endtime.hour > (newrez_starttime.hour + 2):
             return render(request, "rexsite/index.html", {
                 "message": "Your Reservation either exceeds 2 hours or is invalid, please input a vaild reservation",
                 "Reservations": Reservation.objects.filter(dayof = date.today()).order_by("starttime", "court")

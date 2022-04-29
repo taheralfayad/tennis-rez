@@ -52,12 +52,13 @@ z-index: -110;
   cursor: pointer;
   text-decoration: none;
   font-size: 2rem;
+  font-style: italic;
   font-family: 'Varela Round', sans-serif;
   position: absolute;
   top: 0px;
-  left: 15px;
+  left: 10px;
   padding-top: 15px;
-  padding-left: 60px;
+  padding-left: 40px;
 }
 
 
@@ -186,13 +187,32 @@ cursor: pointer;
 user-select: none;
 }
 
-td, tr {
-  border: 1px solid #999;
-  padding: 0.5rem;
+.calendar_container {
+
+  position: relative;
+  width: 700px;
+  height: 200px;
+  overflow: auto;
+  overflow-x: hidden;
+  top: 50px;
+  margin: 0 auto;
+  background: white
+
 }
 
 table {
-  position: absolute;
-  bottom: 0;
-  padding: 15px 0;
+
+  position: relative;
+  margin: 0 auto;
+  top: 10%;
+  right: 100px;
+  max-width: 400px;
+
+}
+
+td {
+
+  background: rgba(0, 98, 90, 0.24);
+  border: solid #fff 1px;
+  text-align: center;
 }
