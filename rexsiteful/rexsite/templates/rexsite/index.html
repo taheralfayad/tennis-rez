@@ -71,6 +71,28 @@
                         <input class="custom-select" type="time" name="starttime">
                         <input class="custom-select" type="time" name="endtime">
 
+                        <div>
+                        <input type="checkbox" name="guest">Guest</input>
+                        <button type= "button" onclick="memberSearch()">Playing With A Member</button>
+                            <div id="member" style="display: none;">
+                                <h3>Search for a member:</h3> <p>(note: this will not work if the member is not registered with the website)</p> <input type="text" name="first_mem" placeholder="First Name"> 
+                                <input type="text" name="last_mem" placeholder="Last Name">                                                                                                                                                                            
+                            </div>
+
+                        <script>
+                            function memberSearch() {
+                                var search = document.getElementById("member");
+                                if (search.style.display === "none") {
+                                    search.style.display = "block";
+                                }
+
+                                else {
+                                    search.style.display = "none"
+                                }
+                            }
+                        </script>
+                        </div>
+
                       <div>
                     <input type="submit" class="buttonsign" value="SUBMIT">
                      </div>

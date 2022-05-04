@@ -1,8 +1,9 @@
 from email import message
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout 
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.urls import reverse
 from datetime import datetime, date
 
@@ -75,16 +76,25 @@ def reserve(request):
                 "Reservations": Reservation.objects.filter(dayof = date.today()).order_by("starttime", "court")
             })
         else:
-            newrez = Reservation()
-            newrez.dayof = dayof
-            newrez.court = court
-            newrez.starttime = request.POST["starttime"]
-            newrez.endtime = request.POST["endtime"]
-            newrez.save()
-            return render(request, "rexsite/index.html", {
-                "message": "Your Reservation has been registered! Thanks for using Rec-Serve!",
+            FN_playing_with = request.POST["first_mem"]
+            LN_playing_with = request.POST["last_mem"]
+            is_member = User.objects.filter(first_name = FN_playing_with, last_name = LN_playing_with)
+            if (not(is_member)):
+                return render(request, "rexsite/index.html", {
+                "message": "Sorry, we did not find the requested member",
                 "Reservations": Reservation.objects.filter(dayof = date.today()).order_by("starttime", "court")
             })
+            else:
+                newrez = Reservation()
+                newrez.dayof = dayof
+                newrez.court = court
+                newrez.starttime = request.POST["starttime"]
+                newrez.endtime = request.POST["endtime"]
+                newrez.save()
+                return render(request, "rexsite/index.html", {
+                    "message": "Your Reservation has been registered! Thanks for using Rec-Serve!",
+                    "Reservations": Reservation.objects.filter(dayof = date.today()).order_by("starttime", "court")
+                })
 
 
     
