@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 
 from urllib3 import HTTPResponse
@@ -87,4 +87,24 @@ def reserve(request):
             })
 
 
-    
+
+def showreservations(request):
+    if request.method == "POST":
+        day = request.POST["whatDay"]
+        if day == "Today":
+            return render(request, "rexsite/index.html", {
+                        "Reservations": Reservation.objects.filter(dayof = date.today()).order_by("starttime", "court"),
+                        "day": day
+                    })
+        if day == "Tomorrow":
+            tomorrow = date.today() + timedelta(days = 1)
+            return render(request, "rexsite/index.html", {
+                    "Reservations": Reservation.objects.filter(dayof = tomorrow).order_by("starttime", "court"),
+                    "day": day
+                })
+        if day == "After Tomorrow":
+            after_tmrw = date.today() + timedelta(days = 2)
+            return render(request, "rexsite/index.html", {
+                    "Reservations": Reservation.objects.filter(dayof = after_tmrw).order_by("starttime", "court"),
+                    "day": day
+                })
